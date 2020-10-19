@@ -41,8 +41,19 @@ def lidar_callback(scan_msg):
         # based on the motion you want (turn, stop moving, etc...), modify the target velocity of the robot motion
         print("minAngle: ",minAngle)
         print("maxAngle: ",maxAngle)
+        print("degMaxAngle: ",maxAngle*(180/3.14159))
         print("angleIncrement: ",angleIncrement)
         # i.e.:
+        degTheta = currentLaserTheta * (180/3.14159)
+        print("i: ",i)
+        print("degTheta: ",degTheta)
+        print('\n')
+        if 75 < degTheta < 105:
+            if scan >= 1:
+                command.linear.x = 0
+                print("In stop, degTheta: ",degTheta)
+                print("STOP")
+        
         command.linear.x = 0.5
         # After this loop is done, we increment the currentLaserTheta
         currentLaserTheta = currentLaserTheta + angleIncrement
