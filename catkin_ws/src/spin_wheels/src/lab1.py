@@ -48,13 +48,13 @@ def lidar_callback(scan_msg):
         print("i: ",i)
         print("degTheta: ",degTheta)
         print('\n')
-        if 75 < degTheta < 105:
+        if 75 <= degTheta < 105:
             if scan >= 1:
                 command.linear.x = 0
                 print("In stop, degTheta: ",degTheta)
                 print("STOP")
-        
-        command.linear.x = 0.5
+            else:        
+                command.linear.x = 0.5
         # After this loop is done, we increment the currentLaserTheta
         currentLaserTheta = currentLaserTheta + angleIncrement
 
