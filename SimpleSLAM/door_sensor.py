@@ -42,6 +42,17 @@ class DoorSensor:
         # begin homework 2 : problem 1
         # Flip the coin...
         # Determine percentage in front of door
+        total_in_front = 0
+        for i in range(100):
+            total_in_front += int(self.is_in_front_of_door(ws, rs))
+         
+        in_prob_see_door_if_door = total_in_front/100
+        in_prob_see_door_if_not_door = 1-(total_in_front/100)
+        
+        #print("in_prob_see_door_if_door: ",in_prob_see_door_if_door)
+        #print("in_prob_see_door_if_not_door: ",in_prob_see_door_if_not_door)
+
+        self.set_probabilities(in_prob_see_door_if_door, in_prob_see_door_if_not_door)
         # end homework 2 : problem 1
         return True
 
