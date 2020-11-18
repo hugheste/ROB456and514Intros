@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import numpy as np
-
+import random
 
 from world_state import WorldState
 
@@ -36,6 +36,24 @@ class RobotState:
 
         # begin homework 2 : problem 2
         # check probabilities are correct
+        total_left = 0
+        total_right = 0
+        step_size = 0.05
+        
+        for i in range(100):
+            amount_moved = self.move_left(step_size)
+            if amount_moved < 0:
+                total_left += 1
+            if amount_moved > 0:
+                total_right += 1
+
+        prob_move_left_if_left = total_left/100
+        prob_move_right_if_left = total_right/100
+        print("prob_move_left_if_left: ",prob_move_left_if_left)
+        print("prob_move_right_if_left: ",prob_move_right_if_left)
+        
+        self.prob_move_left_if_left = move_left_if_left
+        self.prob_move_right_if_left = move_right_if_left    
         # end homework 2 : problem 2
 
     # Make sure probabilities add up to one
@@ -45,6 +63,23 @@ class RobotState:
 
         # begin homework 2 : problem 2
         # check probabilities are correct
+        total_left = 0
+        total_right = 0
+        step_size = 0.05
+        for i in range(100):
+            amount_moved = self.move_right(step_size)
+            if amount_moved < 0:
+                total_left += 1
+            if amount_moved > 0:
+                total_right += 1
+
+        prob_move_left_if_left = total_left/100
+        prob_move_right_if_left = total_right/100
+        print("prob_move_left_if_left: ",prob_move_left_if_left)
+        print("prob_move_right_if_left: ",prob_move_right_if_left)
+        
+        self.prob_move_left_if_left = move_left_if_left
+        self.prob_move_right_if_left = move_right_if_left    
         # end homework 2 : problem 2
 
     # Just a helper function to place robot + sign in middle of bin
@@ -75,6 +110,19 @@ class RobotState:
         # begin homework 2 : problem 2
         # begin homework 2 : problem 2
         # Flip the coin...
+        choice = random.uniform(1,3)
+        if choice is 1:
+            print("Move LEFT")
+            # Move left
+            step_size = -1 * abs(step_size)
+        elif choice is 2:
+            print("Move RIGHT")
+            # Move right
+            step_size = abs(step_size)
+        elif choice is 3:
+            # Stay put
+            print("STAY PUT")
+            step_size = 0
         # Determine whether to move left, right, or stay put
         # end homework 2 : problem 2
         return self._move_(step_size)
@@ -86,6 +134,19 @@ class RobotState:
         :returns The amount actually moved """
         # begin homework 2 : problem 2
         # Flip the coin...
+        choice = random.uniform(1,3)
+        if choice is 1:
+            print("Move LEFT")
+            # Move left
+            step_size = -1 * abs(step_size)
+        elif choice is 2:
+            print("Move RIGHT")
+            # Move right
+            step_size = abs(step_size)
+        elif choice is 3:
+            # Stay put
+            print("STAY PUT")
+            step_size = 0
         # Determine whether to move left, right, or stay put
         # end homework 2 : problem 2
         return self._move_(step_size)

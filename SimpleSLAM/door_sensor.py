@@ -49,8 +49,8 @@ class DoorSensor:
         in_prob_see_door_if_door = total_in_front/100
         in_prob_see_door_if_not_door = 1-(total_in_front/100)
         
-        #print("in_prob_see_door_if_door: ",in_prob_see_door_if_door)
-        #print("in_prob_see_door_if_not_door: ",in_prob_see_door_if_not_door)
+        print("in_prob_see_door_if_door: ",in_prob_see_door_if_door)
+        print("in_prob_see_door_if_not_door: ",in_prob_see_door_if_not_door)
 
         self.set_probabilities(in_prob_see_door_if_door, in_prob_see_door_if_not_door)
         # end homework 2 : problem 1
