@@ -33,6 +33,8 @@ class RobotStateEstimation:
         new_probs = np.zeros(len(self.probabilities))
         # begin homework 2 : problem 3
         # Normalize - all the denominators are the same because they're the sum of all cases
+        
+
         # end homework 2 : problem 3
 
     # Distance to wall sensor (state estimation)

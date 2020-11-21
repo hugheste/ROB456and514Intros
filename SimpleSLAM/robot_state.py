@@ -10,8 +10,8 @@ from world_state import WorldState
 class RobotState:
     def __init__(self):
         # Default probabilities - will be set later by gui
-        self.set_move_left_probabilities(0.8, 0.1)
-        self.set_move_right_probabilities(0.8, 0.1)
+        #self.set_move_left_probabilities(0.8, 0.1)
+        #self.set_move_right_probabilities(0.8, 0.1)
 
         self.prob_move_left_if_left = 0.8
         self.prob_move_right_if_left = 0.05
@@ -36,6 +36,16 @@ class RobotState:
 
         # begin homework 2 : problem 2
         # check probabilities are correct
+        
+        
+        print("\nPASSED IN VALUES:")
+        print("prob_move_left_if_left: ",move_left_if_left)
+        print("prob_move_right_if_left: ",move_right_if_left)
+        print("prob_no_move_if_left: ",self.prob_no_move_if_left)
+        if move_left_if_left + move_right_if_left + self.prob_no_move_if_left > 1:
+            print("Error: Probabilities are larger than 1!")
+            self.prob_no_move_if_left = 1 - (move_left_if_left + move_right_if_left)
+        
         total_left = 0
         total_right = 0
         step_size = 0.05
@@ -49,11 +59,13 @@ class RobotState:
 
         prob_move_left_if_left = total_left/100
         prob_move_right_if_left = total_right/100
+        print("START TESTING SET MOVE LEFT PROBABILITIES")
         print("prob_move_left_if_left: ",prob_move_left_if_left)
         print("prob_move_right_if_left: ",prob_move_right_if_left)
+        print("END TESTING SET MOVE LEFT PROBABILITIES\n")
         
-        self.prob_move_left_if_left = move_left_if_left
-        self.prob_move_right_if_left = move_right_if_left    
+        
+        
         # end homework 2 : problem 2
 
     # Make sure probabilities add up to one
@@ -63,6 +75,7 @@ class RobotState:
 
         # begin homework 2 : problem 2
         # check probabilities are correct
+        '''
         total_left = 0
         total_right = 0
         step_size = 0.05
@@ -80,6 +93,16 @@ class RobotState:
         
         self.prob_move_left_if_left = move_left_if_left
         self.prob_move_right_if_left = move_right_if_left    
+        '''
+        print("prob_move_left_if_right: ",move_left_if_right)
+        print("prob_move_right_if_right: ",move_right_if_right)
+        print("prob_no_move_if_right: ",self.prob_no_move_if_right)
+        if move_right_if_right + move_left_if_right + self.prob_no_move_if_right > 1:
+            print("Error: Probabilities are larger than 1!")
+            self.prob_no_move_if_right = 1 - (move_left_if_right + move_right_if_right)
+        else:
+            self.prob_move_right_if_right = move_right_if_right
+            self.prob_move_left_if_right = move_left_if_right
         # end homework 2 : problem 2
 
     # Just a helper function to place robot + sign in middle of bin
@@ -110,16 +133,17 @@ class RobotState:
         # begin homework 2 : problem 2
         # begin homework 2 : problem 2
         # Flip the coin...
-        choice = random.uniform(1,3)
-        if choice is 1:
+        #choice = random.uniform(1,3)
+        choice = np.random.choice(np.array(["left","right","stay_put"]), p=[self.prob_move_left_if_left,self.prob_move_right_if_left,self.prob_no_move_if_left])
+        if choice == "left":
             print("Move LEFT")
             # Move left
             step_size = -1 * abs(step_size)
-        elif choice is 2:
+        elif choice == "right":
             print("Move RIGHT")
             # Move right
             step_size = abs(step_size)
-        elif choice is 3:
+        elif choice == "stay_put":
             # Stay put
             print("STAY PUT")
             step_size = 0
@@ -134,6 +158,20 @@ class RobotState:
         :returns The amount actually moved """
         # begin homework 2 : problem 2
         # Flip the coin...
+        choice = np.random.choice(np.array(["left","right","stay_put"]), p=[self.prob_move_left_if_right,self.prob_move_right_if_right,self.prob_no_move_if_right])
+        if choice == "left":
+            print("Move LEFT")
+            # Move left
+            step_size = -1 * abs(step_size)
+        elif choice == "right":
+            print("Move RIGHT")
+            # Move right
+            step_size = abs(step_size)
+        elif choice == "stay_put":
+            # Stay put
+            print("STAY PUT")
+            step_size = 0
+        '''
         choice = random.uniform(1,3)
         if choice is 1:
             print("Move LEFT")
@@ -147,6 +185,7 @@ class RobotState:
             # Stay put
             print("STAY PUT")
             step_size = 0
+        '''
         # Determine whether to move left, right, or stay put
         # end homework 2 : problem 2
         return self._move_(step_size)
@@ -168,6 +207,8 @@ if __name__ == '__main__':
     ws = WorldState()
 
     rs = RobotState()
+    rs.set_move_left_probabilities(0.8, 0.1)
+    rs.set_move_right_probabilities(0.8, 0.1)
 
     # Move far enough to the left and you should stop moving
     print("Checking _Move_ function")
