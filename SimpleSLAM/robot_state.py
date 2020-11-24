@@ -10,9 +10,6 @@ from world_state import WorldState
 class RobotState:
     def __init__(self):
         # Default probabilities - will be set later by gui
-        #self.set_move_left_probabilities(0.8, 0.1)
-        #self.set_move_right_probabilities(0.8, 0.1)
-
         self.prob_move_left_if_left = 0.8
         self.prob_move_right_if_left = 0.05
         self.prob_no_move_if_left = 0.15
@@ -29,6 +26,9 @@ class RobotState:
         # Where the robot actually is
         self.robot_loc = 0.5
 
+        self.set_move_left_probabilities(0.8, 0.1)
+        self.set_move_right_probabilities(0.8, 0.1)
+
     # Make sure probabilities add up to one
     def set_move_left_probabilities(self, move_left_if_left=0.8, move_right_if_left=0.05):
         self.prob_move_left_if_left = move_left_if_left
@@ -42,9 +42,11 @@ class RobotState:
         print("prob_move_left_if_left: ",move_left_if_left)
         print("prob_move_right_if_left: ",move_right_if_left)
         print("prob_no_move_if_left: ",self.prob_no_move_if_left)
-        if move_left_if_left + move_right_if_left + self.prob_no_move_if_left > 1:
+        if self.prob_move_left_if_left + self.prob_move_right_if_left + self.prob_no_move_if_left != 1:
             print("Error: Probabilities are larger than 1!")
             self.prob_no_move_if_left = 1 - (move_left_if_left + move_right_if_left)
+        print("NEW prob_no_move_if_left: ", self.prob_no_move_if_left)
+        print("SUM left: ",self.prob_move_left_if_left + self.prob_move_right_if_left + self.prob_no_move_if_left)
         
         total_left = 0
         total_right = 0
@@ -97,7 +99,7 @@ class RobotState:
         print("prob_move_left_if_right: ",move_left_if_right)
         print("prob_move_right_if_right: ",move_right_if_right)
         print("prob_no_move_if_right: ",self.prob_no_move_if_right)
-        if move_right_if_right + move_left_if_right + self.prob_no_move_if_right > 1:
+        if move_right_if_right + move_left_if_right + self.prob_no_move_if_right != 1:
             print("Error: Probabilities are larger than 1!")
             self.prob_no_move_if_right = 1 - (move_left_if_right + move_right_if_right)
         else:
@@ -207,8 +209,6 @@ if __name__ == '__main__':
     ws = WorldState()
 
     rs = RobotState()
-    rs.set_move_left_probabilities(0.8, 0.1)
-    rs.set_move_right_probabilities(0.8, 0.1)
 
     # Move far enough to the left and you should stop moving
     print("Checking _Move_ function")

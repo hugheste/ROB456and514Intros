@@ -33,7 +33,47 @@ class RobotStateEstimation:
         new_probs = np.zeros(len(self.probabilities))
         # begin homework 2 : problem 3
         # Normalize - all the denominators are the same because they're the sum of all cases
-        
+        # P(B|A=door): ds.prob_see_door_if_door
+        # P(B|A=no door): ds.prob_see_door_if_no_door
+        # P(A): Prob. door, starts at 0.5
+        # P(B): Prob. no door, starts at 0.5
+        # Trying to find P(A|B): Probability robot is in front of door given sensor reading
+
+        #div = 1.0 / len(self.probabilities)
+        #new_probs = np.ones(len(self.probabilities)) * div
+
+        print("before ws.doors: ",ws.doors)
+        print("after ws.doors: ",ws.doors[0] * len(self.probabilities))
+        print("after ws.doors: ", int(ws.doors[0] * len(self.probabilities)))
+        print("self.probabilities: ",self.probabilities)
+        print("sensor_reading_has_door: ",sensor_reading_has_door)
+
+        door_indexes = np.zeros(len(ws.doors))
+        for i in range(len(ws.doors)):
+            door_indexes[i] = int(ws.doors[i] * len(self.probabilities))
+
+        for i in range(len(self.probabilities)):
+            for j in range(len(door_indexes)):
+                if i == door_indexes[j]:
+                    if sensor_reading_has_door:
+                        # likelihood * belief
+                        new_probs[i] = ds.prob_see_door_if_door * self.probabilities[i]
+                    else:
+                        new_probs[i] = ds.prob_see_door_if_no_door * self.probabilities[i]
+
+        # Normalize
+        print("new_probs: ",new_probs)
+        total = sum(self.probabilities)
+        print("total: ",total)
+        #if total != 0:
+        for i in range(len(new_probs)):
+            new_probs[i] = new_probs[i]/total
+
+        self.probabilities = new_probs
+
+        #numerator = ds.prob_see_door_if_door * 0.5
+        #denominator = ds.prob_see_door_if_door * 0.5 + ds.prob_see_door_if_no_door * 0.5
+        #bayes = numerator/denominator
 
         # end homework 2 : problem 3
 
@@ -57,9 +97,49 @@ class RobotStateEstimation:
 
         # begin homework 2 problem 4
         # Check probability of left, no, right sum to one
+        if rs.prob_move_left_if_left + rs.prob_move_right_if_left + rs.prob_no_move_if_left != 1:
+            print("Error: Probabilities are not equal to 1!")
+            rs.prob_no_move_if_left = 1 - (rs.prob_move_left_if_left + rs.prob_move_right_if_left)
+
         # Left edge - put move left probability into zero square along with stay-put probability
+        size = len(self.probabilities)
+        new_probs = np.zeros(size)
+        new_probs[0] = rs.prob_move_left_if_left + rs.prob_no_move_if_left
+
         # Right edge - put move right probability into last square
+        new_probs[size-1] = rs.prob_move_right_if_left
+
         # Normalize - sum should be one, except for numerical rounding
+        new_probs /= sum(new_probs)
+        print("In update_belief_move_left, new_probs: ",new_probs)
+
+        '''
+        # Determine new belief based on move left
+        move = rs.move_left()
+        n = len(self.probabilities)
+        result = np.zeros(n)
+        for i in range(n):
+            result[i] = self.probabilities[(i - move) % n]
+        self.probabilities[:] = result
+        '''
+
+        '''
+        new_probs = np.zeros(len(self.probabilities))
+        prob_move_left_if_left = rs.prob_move_left_if_left
+        for i in range(len(self.probabilities)):
+            if rs.move_left < 0:
+                new_probs[i] = rs.prob_move_left_if_left * self.probabilities[i]
+            else:
+                new_probs[i] = rs.prob_move_right_if_left * self.probabilities[i]
+
+        # Normalize
+        total = sum(new_probs)
+        for i in range(len(new_probs)):
+            new_probs[i] /= total
+
+        self.probabilities = new_probs
+        '''
+
         # end homework 2 problem 4
 
     def update_belief_move_right(self, rs):
