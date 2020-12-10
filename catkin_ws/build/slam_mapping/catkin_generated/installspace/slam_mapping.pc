@@ -1,4 +1,4 @@
-prefix=/home/ubuntu/ROB456and514Intros/catkin_ws/install
+prefix=/home/ubuntu/catkin_ws/install
 
 Name: slam_mapping
 Description: Description of slam_mapping

@@ -67,14 +67,14 @@ set(slam_mapping_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(slam_mapping_SOURCE_PREFIX /home/ubuntu/ROB456and514Intros/catkin_ws/src/slam_mapping)
-  set(slam_mapping_DEVEL_PREFIX /home/ubuntu/ROB456and514Intros/catkin_ws/devel)
+  set(slam_mapping_SOURCE_PREFIX /home/ubuntu/catkin_ws/src/slam_mapping)
+  set(slam_mapping_DEVEL_PREFIX /home/ubuntu/catkin_ws/devel)
   set(slam_mapping_INSTALL_PREFIX "")
   set(slam_mapping_PREFIX ${slam_mapping_DEVEL_PREFIX})
 else()
   set(slam_mapping_SOURCE_PREFIX "")
   set(slam_mapping_DEVEL_PREFIX "")
-  set(slam_mapping_INSTALL_PREFIX /home/ubuntu/ROB456and514Intros/catkin_ws/install)
+  set(slam_mapping_INSTALL_PREFIX /home/ubuntu/catkin_ws/install)
   set(slam_mapping_PREFIX ${slam_mapping_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/ubuntu/ROB456and514Intros/catkin_ws/install/lib;/opt/ros/melodic/lib)
+    foreach(path /home/ubuntu/catkin_ws/install/lib;/home/ubuntu/catkin_ws/devel/lib;/opt/ros/melodic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
